@@ -1,0 +1,35 @@
+PROYECTO PERCEPTRON: ARDUINO UNO + PYTHON
+
+ARCHIVOS
+- Perceptron_General.ino/Perceptron_General.ino.ino : sketch para Arduino UNO.
+- perceptron_comun.py : carga datos, se comunica con Arduino y guarda resultados.
+- actividad_diabetes.py : dataset Diabetes_SSEE.csv.
+- actividad_anemia.py : dataset Anemia.csv.
+- actividad_obesidad.py : dataset Obesidad.csv.
+- Los tres CSV contienen las columnas que usan sus respectivos scripts.
+
+PASOS DE EJECUCION
+1. Abre el sketch .ino en Arduino IDE.
+2. Selecciona placa Arduino UNO y el puerto COM5 (o cambia PUERTO en perceptron_comun.py si Windows asigna otro).
+3. Sube el sketch al Arduino. El sketch usa 115200 baudios.
+4. Cierra el Monitor Serie de Arduino IDE; Python necesita usar el mismo puerto COM.
+5. Abre PowerShell en la carpeta donde están los scripts y CSV.
+6. Instala dependencias una vez:
+   python -m pip install pandas matplotlib pyserial
+7. Ejecuta UNO de estos comandos cada vez:
+   python -u actividad_diabetes.py
+   python -u actividad_anemia.py
+   python -u actividad_obesidad.py
+8. Espera el entrenamiento; se envía cada registro y Arduino contesta ACK para evitar saturar el búfer serial.
+9. Al terminar, se muestran pesos, bias y exactitud. Se guardan archivos *_resultados.csv y gráficas PNG en la carpeta actual.
+10. Para probar un registro nuevo, escribe los valores de las características cuando se soliciten. Escribe salir para terminar.
+
+PROTOCOLO SERIAL
+Python envía N=numero_de_registros, F=numero_de_caracteristicas y E=epocas.
+Arduino responde READY. Para cada fila recibida, responde ACK. Al terminar imprime W0..., BIAS, EPOCHS, LAST_ERRORS y DONE.
+
+NOTAS
+- Arduino UNO admite hasta 6 características en este sketch.
+- Las etiquetas objetivo deben ser 0 o 1.
+- El puerto configurado inicialmente es COM5; modifica PUERTO en perceptron_comun.py si es distinto.
+- Las predicciones de diabetes, anemia u obesidad son solo una demostración académica, no diagnósticos médicos.
